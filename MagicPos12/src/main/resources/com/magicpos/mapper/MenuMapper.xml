@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magicpos.mapper.MenuMapper">
+	
+	<!-- 매장별 메뉴 리스트 -->
+	<select id="menuInfo" resultType="com.magicpos.entity.Menu_info" parameterType="com.magicpos.entity.Restaurant_info">
+		SELECT * FROM menu_info where shop_email=#{shop_email}
+	</select>
+	
+	<!--  메뉴 등록 SQL -->
+	<insert id="menuRegister" parameterType="com.magicpos.entity.Menu_info">
+		INSERT INTO menu_info(shop_email, menu_name, menu_price)
+		VALUES(#{shop_email},#{menu_name},#{menu_price})
+	</insert>
+	
+	<!-- 메뉴 삭제 SQL-->
+	<delete id="menuRemove" parameterType="com.magicpos.entity.Menu_info">
+		DELETE FROM menu_info WHERE menu_idx=#{menu_idx}
+	</delete>
+	
+	<!-- 메뉴 수정 SQL -->
+	<update id="menuModify" parameterType="com.magicpos.entity.Menu_info">
+		UPDATE menu_info SET menu_name=#{menu_name}, menu_price=#{menu_price} where menu_idx = #{menu_idx}
+	</update>
+	
+	<!-- 주문 등록 SQL -->
+	<insert id="orderRegister" parameterType="com.magicpos.entity.Order_info">
+		INSERT INTO order_info(order_idx, shop_email, table_no, menu_idx, menu_name, menu_price, menu_cnt, menu_total_amount, order_total_amount, order_date)
+		values(#{order_idx}, #{shop_email}, #{table_no}, #{menu_idx}, #{menu_name}, #{menu_price}, #{menu_cnt}, #{menu_total_amount}, #{order_total_amount}, now())
+	</insert>
+	
+	<!-- 메뉴 순번 가져오기 SQL -->
+	<select id="getOrderIdx" resultType="int">
+		SELECT count(*) FROM order_info
+	</select>
+	
+	<!-- 테이블에 해당하는 메뉴 가져오는 SQL -->
+	<select id="orderInfo" resultType="com.magicpos.entity.Order_info" parameterType="com.magicpos.entity.Restaurant_info">
+		select * from order_info where shop_email=#{shop_email}
+	</select>
+	
+	<select id="getOrderList" parameterType="com.magicpos.entity.Order_info" resultType="com.magicpos.entity.Order_info">
+		select * from order_info where table_no = #{table_no} and shop_email = #{shop_email} and payYN = 'N'
+	</select>
+	
+	<update id="payNY" parameterType="com.magicpos.entity.Order_info">
+		UPDATE order_info SET payYN ='Y' where table_no=#{table_no} and shop_email=#{shop_email} and payYN='N';
+	</update>
+	
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magicpos.mapper.StoreManage">
+	<select id="currentSales" parameterType="com.magicpos.entity.Restaurant_info" resultType="com.magicpos.entity.Store_ManageVO">
+		SELECT order_date as date, sum(menu_total_amount) as 'menu_amount' FROM order_info WHERE shop_email = #{shop_email} GROUP by order_date;
+	</select>
+	
+	<select id="salesStatus" parameterType="com.magicpos.entity.Restaurant_info" resultType="com.magicpos.entity.Store_ManageVO">
+		SELECT menu_name,sum(menu_total_amount) as 'menu_amount' FROM order_info WHERE shop_email = #{shop_email} GROUP BY menu_name;
+	</select>
+	
+	<select id="salesMonthly" parameterType="com.magicpos.entity.Restaurant_info" resultType="com.magicpos.entity.Store_ManageVO">
+		SELECT DATE_FORMAT(order_date,'%Y-%m') as date, sum(menu_total_amount) as 'menu_amount' FROM order_info WHERE shop_email = #{shop_email} GROUP BY date;
+	</select>
+	
+	<select id="salesWeekly" parameterType="com.magicpos.entity.Restaurant_info" resultType="com.magicpos.entity.Store_ManageVO">
+		SELECT DATE_FORMAT(order_date,'%Y-%m') as date, sum(menu_total_amount) as 'menu_amount' FROM order_info WHERE shop_email = #{shop_email} GROUP BY date;
+	</select>
+	
+</mapper>

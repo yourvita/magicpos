@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magicpos.mapper.orderMapper">
+	
+	
+	<!-- =================== payYN = 'Y'(결제 완료/orderComplete)=================== -->
+	<!-- 주문정보 모든컬럼 가져오기 (주문 완료 상관 X)  -->
+	<select id="loginResOrder_Y" parameterType="com.magicpos.entity.Criteria" resultType="com.magicpos.entity.Order_info">
+		select * from order_info where shop_email = #{shop_email} and order_idx = #{order_idx} and payYN = 'Y' 
+	</select>
+
+	<!-- distinct된 인덱스번호 가져오기 -->
+	<select id="getOrderIdx_Y" resultType="int" parameterType="com.magicpos.entity.Restaurant_info">
+		SELECT distinct order_idx FROM order_info where shop_email = #{shop_email} and payYN = 'Y'
+	</select>
+	
+	<!-- 메뉴별 가격 더해서 가져오기(sum(menu_total_ptice)) -->
+	<select id="getOrderPrice_Y" parameterType="com.magicpos.entity.Criteria" resultType="int">
+		SELECT sum(menu_total_amount) FROM order_info where shop_email = #{shop_email} and order_idx = #{order_idx} and payYN = 'Y'
+	</select>	
+	
+	<!-- 테이블 넘버, 날짜, 결제 여부 가져오기 -->
+	<select id="no_Date_YN_Y" parameterType="com.magicpos.entity.Criteria" resultType="com.magicpos.entity.Order_info">
+		SELECT distinct table_no, order_date, payYN FROM order_info  WHERE order_idx= #{order_idx} and shop_email = #{shop_email} and payYN = 'Y'
+	</select>
+	<!-- ==================payYN = 'Y'(결제 완료/orderComplete)===================== -->
+	
+	<!-- ====================payYN = 'N'(결제 전/orderList)======================= -->
+	<!-- 주문정보 모든컬럼 가져오기 (주문 완료 상관 X)  -->
+	<select id="loginResOrder_N" parameterType="com.magicpos.entity.Criteria" resultType="com.magicpos.entity.Order_info">
+		select * from order_info where shop_email = #{shop_email} and order_idx = #{order_idx} and payYN = 'N' 
+	</select>
+
+	<!-- distinct된 인덱스번호 가져오기 -->
+	<select id="getOrderIdx_N" resultType="int" parameterType="com.magicpos.entity.Restaurant_info">
+		SELECT distinct order_idx FROM order_info where shop_email = #{shop_email} and payYN = 'N'
+	</select>
+	
+	
+	<!-- 메뉴별 가격 더해서 가져오기(sum(menu_total_ptice)) -->
+	<select id="getOrderPrice_N" parameterType="com.magicpos.entity.Criteria" resultType="int">
+		SELECT sum(menu_total_amount) FROM order_info where shop_email = #{shop_email} and order_idx = #{order_idx} and payYN = 'N' 
+	</select>	
+	
+	<!-- 테이블 넘버, 날짜, 결제 여부 가져오기 -->
+	<select id="no_Date_YN_N" parameterType="com.magicpos.entity.Criteria" resultType="com.magicpos.entity.Order_info">
+		SELECT distinct table_no, order_date, payYN FROM order_info WHERE order_idx= #{order_idx} and shop_email = #{shop_email} and payYN = 'N'
+	</select>
+	<!-- ========================payYN = 'N'(결제 전/orderList)============================= -->
+	
+	
+	<!-- 페이징(총 컨텐츠 개수) -->
+	<select id="totalCount" parameterType="com.magicpos.entity.Criteria" resultType="int">
+		select count(distinct order_idx) from order_info where shop_email = #{shop_email} and payYN = 'Y'
+	</select>
+
+	<!-- 가게 이름만 가져오기 -->
+	<select id="loginRestaurant" parameterType="com.magicpos.entity.Restaurant_info" resultType="String">
+		select shop_name from restaurant_info where shop_email = #{shop_email}
+	</select>
+	
+</mapper>

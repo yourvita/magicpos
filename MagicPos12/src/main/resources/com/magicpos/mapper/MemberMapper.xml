@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magicpos.mapper.MemberMapper">
+	<insert id="signUp" parameterType="com.magicpos.entity.Restaurant_info">
+		INSERT INTO restaurant_info 
+		VALUES (#{shop_email}, #{shop_pw}, #{shop_name} ,#{shop_owner}, #{shop_table})
+	</insert>
+
+	<select id="login"
+			parameterType="com.magicpos.entity.Restaurant_info"
+			resultType="com.magicpos.entity.Restaurant_info">
+		SELECT * FROM restaurant_info 
+		WHERE shop_email=#{shop_email} and shop_pw=#{shop_pw}
+	</select>
+</mapper>
